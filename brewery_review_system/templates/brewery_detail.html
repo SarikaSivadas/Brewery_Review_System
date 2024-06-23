@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ brewery.name }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-primary">{{ brewery.name }}</h2>
+        <p>{{ brewery.address }}<br>
+        {{ brewery.city }}, {{ brewery.state }}<br>
+        {{ brewery.phone }}<br>
+        <a href="{{ brewery.website }}" target="_blank">{{ brewery.website }}</a></p>
+        
+        <h3>Reviews</h3>
+        <ul class="list-group mb-4">
+            {% for review in reviews %}
+                <li class="list-group-item">
+                    <strong>Rating:</strong> {{ review.rating }}<br>
+                    <strong>Description:</strong> {{ review.description }}<br>
+                    <em>Reviewed by {{ review.user.username }} on {{ review.created_at }}</em>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Add a Review</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="rating">Rating:</label>
+                <input type="number" id="rating" name="rating" class="form-control" min="1" max="5" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </div>
+</body>
+</html>

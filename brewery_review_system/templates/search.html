@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Breweries</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h2 class="text-primary">Search Breweries</h2>
+            <p class="text-muted">Find your favorite breweries by city, name, or type</p>
+        </div>
+        <form method="get" action="{% url 'search' %}" class="mb-4">
+            <div class="form-row align-items-center">
+                <div class="col-md-8 mb-2">
+                    <input type="text" name="q" class="form-control" placeholder="Search for breweries...">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <select name="by" class="form-control">
+                        <option value="city">City</option>
+                        <option value="name">Name</option>
+                        <option value="type">Type</option>
+                    </select>
+                </div>
+                <div class="col-md-2 mb-2">
+                    <button type="submit" class="btn btn-primary btn-block">Search</button>
+                </div>
+            </div>
+        </form>
+
+        {% if breweries %}
+            <div class="list-group">
+                {% for brewery in breweries %}
+                    <a href="{% url 'brewery_detail' brewery.id %}" class="list-group-item list-group-item-action">
+                        <h5 class="mb-1">{{ brewery.name }}</h5>
+                        <p class="mb-1">{{ brewery.street }}<br>{{ brewery.city }}, {{ brewery.state }}</p>
+                        <small>{{ brewery.phone }}</small><br>
+                        <small><a href="{{ brewery.website_url }}" target="_blank">{{ brewery.website_url }}</a></small>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-muted">No breweries found.</p>
+        {% endif %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
